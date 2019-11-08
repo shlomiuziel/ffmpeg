@@ -18,20 +18,21 @@ ARG        LD_LIBRARY_PATH=/opt/ffmpeg/lib
 ARG        PREFIX=/opt/ffmpeg
 ARG        MAKEFLAGS="-j2"
 
-ENV         FFMPEG_VERSION=3.0.12 \
+ENV         FFMPEG_VERSION=3.0.1 \
             AOM_VERSION=v1.0.0 \
             FDKAAC_VERSION=0.1.5 \
             FONTCONFIG_VERSION=2.12.4 \
             FREETYPE_VERSION=2.5.5 \
             FRIBIDI_VERSION=0.19.7 \
             KVAZAAR_VERSION=1.2.0 \
-            LAME_VERSION=3.100 \
+            LAME_VERSION=3.99.5 \
             LIBASS_VERSION=0.13.7 \
             LIBVIDSTAB_VERSION=1.1.0 \
             OGG_VERSION=1.3.2 \
             OPENCOREAMR_VERSION=0.1.5 \
             OPUS_VERSION=1.2 \
-            OPENJPEG_VERSION=2.1.2 \
+            # Downgraded to openjpeg 1.5.2 due to an incompatibility between ffmpeg as a shared lib and openjpeg 2 (https://github.com/uclouvain/openjpeg/issues/766)
+            OPENJPEG_VERSION=1.5.2 \
             THEORA_VERSION=1.1.1 \
             VORBIS_VERSION=1.3.5 \
             VPX_VERSION=1.8.0 \
@@ -224,7 +225,7 @@ RUN \
         DIR=/tmp/openjpeg && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sL https://github.com/uclouvain/openjpeg/archive/v${OPENJPEG_VERSION}.tar.gz | \
+        curl -sL https://github.com/uclouvain/openjpeg/archive/version.${OPENJPEG_VERSION}.tar.gz | \
         tar -zx --strip-components=1 && \
         cmake -DBUILD_THIRDPARTY:BOOL=ON -DCMAKE_INSTALL_PREFIX="${PREFIX}" . && \
         make && \
